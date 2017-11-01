@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>TopCoder Single Round Match 720 - 1000: ExtremeSpanningTrees</title>
+    
+    <link type="image/x-icon" rel="shortcut icon" href="http://www.topcoder.com/i/favicon.ico"/>
+    
+
+    
+    <style type="text/css">
+        /* font */
+body {
+    font-family: Helvetica, Arial, Verdana, sans-serif;
+    font-size: 16px;
+    line-height: 1.2em;
+}
+ul.constraints > li:before, ul.notes > li:before {
+    font-family: monospace;
+    font-weight: normal;
+}
+.heading {
+    font-weight: bold;
+    font-size: 175%;
+    line-height: 1.2em;
+}
+.section .section-title {
+    font-weight: bold;
+    font-size: 125%;
+}
+ol.testcases > li:before {
+    font-family: monospace;
+}
+type {
+    font-weight: bold;
+    font-family: monospace;
+}
+li.testcase .data {
+    font-family: monospace;
+    line-height: 1.5em;
+}
+
+/* layout */
+.heading {
+    margin-top: 0.1em;
+    margin-bottom:0.1em;
+    text-align: center;
+}
+.section .section-title {
+    margin-top : 1em;
+    margin-bottom: 1em;
+}
+.problem-intro, note, user-constraint {
+    padding-left: 1.25em;
+}
+
+/* Lists */
+ul.constraints, ul.notes, ul.variables, ul.problem-definition-lines {
+    list-style-type: none;
+    padding: 0px;
+}
+ul.constraints > li:before {
+    content: "-";
+    position:relative;
+    margin-left: 0px; /* optional, for multiline li element */
+    left: 0.625em;
+}
+ul.notes > li:before {
+    content: "-";
+    position:relative;
+    margin-left: 0px; /* optional, for multiline li element */
+    left: 0.625em;
+}
+
+/* Testcases */
+li.testcase {
+    line-height: 1.1em;
+    padding-top: 0.625em;
+    padding-bottom: 0.625em;
+    overflow: auto;
+}
+li.testcase > .testcase-content > div { padding-bottom: 0.5em; padding-left: 1em; }
+
+li.testcase .testcase-comment {
+    margin: 0;
+    padding-left: 1em;
+}
+.testcase-comment p:first-child { margin-top: 0; }
+.testcase-comment p:last-child { margin-bottom: 0; }
+
+li.testcase .testcase-content {
+    margin: 0.31em;
+}
+
+/* Data and variables */
+.testcase-output {
+    padding: 0.2em 1em 0.2em 0em;
+}
+.variables, .testcase-output {
+    margin-left: 0.5em;
+    display: table;
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
+.variable {
+    display: table-row;
+}
+.variable .name {
+    padding: 0.2em 0em 0.2em 1em;
+    font-weight: bold;
+    display: table-cell;
+    text-align: right;
+}
+.testcase-output .prefix {
+    padding: 0.2em 0em 0.2em 1em;
+    display: table-cell;
+}
+.testcase-output .prefix:after {
+    content : ":";
+    padding-right: 0.5em;
+}
+.variable .name:after {
+    font-weight: bold;
+    content : ":";
+    padding-right: 0.5em;
+}
+.variable .value, .testcase-output .value {
+    padding: 0.2em 1em 0.2em 0em;
+    display: table-cell;
+}
+ol.testcases {
+    padding: 0px;
+    counter-reset: test_number -1;
+}
+ol.testcases > li {
+    list-style:none;
+}
+ol.testcases > li:before {
+    counter-increment:test_number;
+    display: block;
+    clear: both;
+    content:counter(test_number) ")";
+    color: inherit;
+    background: inherit;
+}
+
+/* Problem Definition */
+.problem-definition, .problem-limits {
+    padding-left: 1.25em;
+}
+.problem-definition-lines, .limit-lines {
+    display: table;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding-left: 0px;
+}
+.definition-line, .limit-line {
+    display: table-row;
+    height: 1.5em;
+    overflow: auto;
+}
+.limit-name:after {
+    content: ":";
+    margin-right: 1em;
+}
+.definition-name, .definition-value, .limit-name, .limit-value {
+    display: table-cell;
+}
+.definition-value {
+    padding-left: 0.5em;
+}
+.definition-name:after {
+    content: ":";
+}
+#contest-division:before {
+    content: "Div ";
+}
+#problem-score:before {
+    content: "- Problem ";
+}
+#problem-name {
+    display: block;
+}
+
+/* Tags, hidden default */
+.tag {
+    visibility: hidden;
+    position: absolute;
+}
+
+        body {
+    /* font color */
+    color: #333333;
+    /* background color */
+    background-color: white;
+}
+.section .section-title {
+    /* title color */
+    color: black;
+}
+li.testcase .data {
+    /* highlight color */
+    background: #eee;
+}
+
+    </style>
+    
+    
+    
+
+</head>
+
+<body>
+    <h1 class="heading">
+        <span id='contest-name'>Single Round Match 720</span>
+        
+        <span id='problem-score'>1000</span>
+        <span id='problem-name'>ExtremeSpanningTrees</span>
+    </h1>
+
+    <hr />
+
+    <!-- Problem Statement -->
+    <div class="section">
+        <h2 class="section-title">Problem Statement</h2>
+        <div class="problem-intro">
+            <intro escaped="1"><p>
+Cat Noku received an undirected, connected, weighted graph with n nodes and m edges.
+The edges are labeled from 0 to m-1, and are described by the <type>int[]</type>s <b>a, b, w</b>.
+The i-th edge connects the <b>a</b>[i]-th node to the <b>b</b>[i]-th node with weight <b>w</b>[i].
+It is guaranteed that this graph is connected.
+Also, it is guaranteed that this graph has no self-loops or multiple edges.
+</p>
+
+<p>
+Cat Noku also has two spanning trees of the graph.
+These are described the <type>int[]</type>s <b>m1, m2</b>, which each contain exactly n-1 elements.
+The elements of each of these <type>int[]</type>s are the indices of the edges that form one of the two spanning trees.
+Note that it is possible for these two spanning trees to have some (possibly even all) edges in common.
+</p>
+
+<p>
+Cat Noku would like to make his spanning trees <i>extreme</i>.
+More specifically, he wants the following:
+<ol>
+<li> The spanning tree described by <b>m1</b> is a <i>minimum</i> spanning tree. </li>
+<li> The spanning tree described by <b>m2</b> is a <i>maximum</i> spanning tree. </li>
+</ol>
+</p>
+
+<p>
+Of course, the conditions may not be currently satisfied, so to fix this, Cat Noku can modify the edge weights.
+In each second, he can choose exactly one edge, and either increase or decrease its weight by 1.
+All edge weights must remain positive at all times.
+</p>
+
+<p>
+Please help Cat Noku find the minimum number of seconds needed to satisfy his goal.
+</p></intro>
+        </div>
+    </div>
+    
+    <!-- Problem definition -->
+    
+    <div class="section" id="definition">
+        <h2 class="section-title">Definition</h2>
+        <div class="problem-definition">
+            <ul class="problem-definition-lines">
+                <li class="definition-line" id='class-line'>
+                    <span class='definition-name'>Class</span>
+                    <span class='definition-value'>ExtremeSpanningTrees</span>
+                </li>
+                <li class="definition-line" id='method-line'>
+                    <span class='definition-name'>Method</span>
+                    <span class='definition-value'>minTime</span>
+                </li>
+                <li class="definition-line" id='parameters-line'>
+                    <span class='definition-name'>Parameters</span>
+                    <span class='definition-value'>
+                    
+                        vector&lt;int&gt;
+                    , 
+                        vector&lt;int&gt;
+                    , 
+                        vector&lt;int&gt;
+                    , 
+                        vector&lt;int&gt;
+                    , 
+                        vector&lt;int&gt;
+                    
+                    </span>
+                </li>
+                <li class="definition-line" id='returns-line'>
+                    <span class='definition-name'>Returns</span>
+                    <span class='definition-value'>
+                        long long
+                    </span>
+                </li>
+                <li class="definition-line" id='signature-line'>
+                    <span class='definition-name'>Method signature</span>
+                    <span class='definition-value'>
+                        long long minTime(vector&lt;int&gt; a, vector&lt;int&gt; b, vector&lt;int&gt; w, vector&lt;int&gt; m1, vector&lt;int&gt; m2)
+                    </span>
+                </li>
+            </ul>
+            <div class="problem-definition-public-tip">(be sure your method is public)</div>
+        </div>        
+    </div>
+    
+
+    <!-- Limits -->
+    <div class="section">
+        <h2 class="section-title">Limits</h2>
+        <div class='problem-limits'>
+            <ul class="limit-lines">
+                <li class='limit-line'>
+                    <span class='limit-name'>Time limit (s)</span>
+                    <span class='limit-value'>2.000</span>
+                </li>
+                <li class='limit-line'>
+                    <span class='limit-name'>Memory limit (MB)</span>
+                    <span class='limit-value'>256</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    
+    <!-- Notes -->
+    <div class="section">
+        <h2 class="section-title">Notes</h2>
+        <ul class="notes">
+        
+            <li><note escaped="1">- A minimum spanning tree is a spanning tree that has the smallest sum of edge weights among all spanning trees. A maximum spanning tree is defined in the same way.</note></li>
+        
+        </ul>
+    </div>
+    
+    
+    <!-- Constraints -->
+    <div class="section">
+        <h2 class="section-title">Constraints</h2>
+        <ul class="constraints">
+        
+            <li><user-constraint escaped="1">n will be between 2 and 50, inclusive.</user-constraint></li>
+        
+            <li><user-constraint escaped="1">m will be between n-1 and 1,000, inclusive.</user-constraint></li>
+        
+            <li><user-constraint escaped="1"><b>a,b,w</b> will each contain exactly m elements.</user-constraint></li>
+        
+            <li><user-constraint escaped="1">Each element of <b>w</b> will be between 1 and 10^9, inclusive.</user-constraint></li>
+        
+            <li><user-constraint escaped="1">Each element of <b>a,b</b> will be between 0 and n-1, inclusive.</user-constraint></li>
+        
+            <li><user-constraint escaped="1">The edges described (a[i], b[i]) will describe a simple undirected connected graph.</user-constraint></li>
+        
+            <li><user-constraint escaped="1"><b>m1,m2</b> will each contain exactly n-1 elements.</user-constraint></li>
+        
+            <li><user-constraint escaped="1">Elements in <b>m1</b> will be distinct, and between 0 and m-1, inclusive.</user-constraint></li>
+        
+            <li><user-constraint escaped="1">Elements in <b>m2</b> will be distinct, and between 0 and m-1, inclusive.</user-constraint></li>
+        
+            <li><user-constraint escaped="1">The indices specified by <b>m1</b> will denote a spanning tree.</user-constraint></li>
+        
+            <li><user-constraint escaped="1">The indices specified by <b>m2</b> will denote a spanning tree.</user-constraint></li>
+        
+        </ul>
+    </div>
+
+    <!-- Test cases -->
+    <div class="section">
+        <h2 class="section-title">Test cases</h2>
+        <ol class="testcases" start='0'>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">a</span>
+                                <span class="value data">
+                                
+                                    { 0, 1, 2, 3, 4 }
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">b</span>
+                                <span class="value data">
+                                
+                                    { 1, 2, 3, 4, 0 }
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">w</span>
+                                <span class="value data">
+                                
+                                    { 6, 1, 2, 4, 9 }
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">m1</span>
+                                <span class="value data">
+                                
+                                    { 1, 0, 3, 2 }
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">m2</span>
+                                <span class="value data">
+                                
+                                    { 3, 1, 2, 0 }
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            12
+                        
+                        </span>
+                    </div>
+                    
+                    <div class="testcase-annotation">
+                        <div class='tag'>note</div>
+                        <div class="testcase-comment">In this case, the same tree must be both a minimum and a maximum spanning tree. It is optimal to make all edge weights equal, which means we should move the edge weights to the median weight (in this case 4). Thus, the answer is |6-4|+|1-4|+|2-4|+|4-4|+|9-4| = 12.</div>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">a</span>
+                                <span class="value data">
+                                
+                                    { 0, 1, 2, 3, 4 }
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">b</span>
+                                <span class="value data">
+                                
+                                    { 1, 2, 3, 4, 0 }
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">w</span>
+                                <span class="value data">
+                                
+                                    { 1000000000, 1, 50000, 230, 78778878 }
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">m1</span>
+                                <span class="value data">
+                                
+                                    { 1, 2, 3, 4 }
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">m2</span>
+                                <span class="value data">
+                                
+                                    { 0, 1, 2, 4 }
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            229
+                        
+                        </span>
+                    </div>
+                    
+                    <div class="testcase-annotation">
+                        <div class='tag'>note</div>
+                        <div class="testcase-comment">One optimal solution in this case is to increase the weight on the edge labeled 1 to 230.</div>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">a</span>
+                                <span class="value data">
+                                
+                                    { 2, 3, 2, 1, 4, 3, 1, 2 }
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">b</span>
+                                <span class="value data">
+                                
+                                    { 4, 0, 1, 0, 0, 4, 3, 0 }
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">w</span>
+                                <span class="value data">
+                                
+                                    { 35, 69, 83, 48, 23, 77, 18, 75 }
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">m1</span>
+                                <span class="value data">
+                                
+                                    { 7, 2, 4, 6 }
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">m2</span>
+                                <span class="value data">
+                                
+                                    { 6, 0, 3, 5 }
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            126
+                        
+                        </span>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">a</span>
+                                <span class="value data">
+                                
+                                    { 18, 10, 7, 20, 25, 16, 0, 25, 1, 1, 18, 5, 21, 29, 0, 19, 27, 5, 5, 2, 5, 14, 24, 28, 17, 17, 13, 28, 29, 21, 27, 14, 3, 4, 0, 6, 7, 2, 19, 22, 1, 15, 28, 28, 22, 4, 18, 27, 25, 25, 16, 26, 14, 24, 28, 23, 23, 2, 7, 25, 27, 28, 24, 21, 3, 1, 4, 4, 23, 21 }
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">b</span>
+                                <span class="value data">
+                                
+                                    { 26, 1, 0, 25, 6, 7, 19, 10, 3, 25, 19, 28, 24, 10, 10, 1, 4, 21, 2, 13, 11, 9, 23, 27, 22, 25, 16, 25, 3, 3, 23, 21, 20, 25, 5, 27, 12, 10, 10, 9, 13, 8, 22, 29, 16, 21, 0, 8, 8, 11, 20, 29, 13, 7, 20, 11, 5, 3, 6, 22, 2, 21, 16, 18, 0, 24, 2, 15, 16, 23 }
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">w</span>
+                                <span class="value data">
+                                
+                                    { 178550173, 70889251, 552583494, 693530287, 913018412, 813354729, 22559015, 790019960, 417638821, 350031148, 342183709, 546736964, 846258018, 288707281, 910585230, 217659326, 472037330, 407441317, 869355814, 510462471, 495766436, 645229822, 817030, 843038598, 814619628, 144969408, 832500308, 150645645, 400781547, 266132945, 112756643, 991866897, 166797713, 408918210, 192114032, 765168046, 69601053, 422959288, 206902656, 71012802, 520439340, 779668518, 457709439, 792537906, 212760134, 200551833, 511130875, 811123320, 772309593, 734005608, 802837429, 982498923, 335250225, 43356697, 621725643, 161179558, 278880928, 88948197, 77554027, 686360474, 851408784, 777256397, 279272225, 856462366, 912791986, 518766837, 430982430, 985439708, 307712218, 659114756 }
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">m1</span>
+                                <span class="value data">
+                                
+                                    { 60, 44, 62, 66, 0, 34, 69, 1, 17, 40, 65, 6, 30, 21, 50, 8, 10, 37, 41, 23, 9, 39, 36, 35, 58, 48, 28, 24, 20 }
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">m2</span>
+                                <span class="value data">
+                                
+                                    { 20, 12, 29, 23, 26, 10, 55, 58, 53, 40, 24, 50, 15, 11, 35, 48, 43, 63, 60, 39, 59, 46, 7, 42, 52, 41, 51, 36, 67 }
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            11341657393
+                        
+                        </span>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">a</span>
+                                <span class="value data">
+                                
+                                    { 0 }
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">b</span>
+                                <span class="value data">
+                                
+                                    { 1 }
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">w</span>
+                                <span class="value data">
+                                
+                                    { 123456789 }
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">m1</span>
+                                <span class="value data">
+                                
+                                    { 0 }
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">m2</span>
+                                <span class="value data">
+                                
+                                    { 0 }
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            0
+                        
+                        </span>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+        </ol>
+    </div>
+    <hr />
+
+    This problem statement is the exclusive and proprietary property of TopCoder, Inc. Any unauthorized use or reproduction of this information without the prior written consent of TopCoder, Inc. is strictly prohibited. (c)2003, TopCoder, Inc. All rights reserved.
+</body>
+</html>

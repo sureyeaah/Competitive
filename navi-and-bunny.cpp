@@ -11,7 +11,12 @@ using namespace std;
 #define printCase() "Case #" << caseNum << ": "
 #define pb push_back
 #define mp make_pair
-#define INF ((int)1e9)
+#define EPS (1e-9)
+#define PI 3.1415926535
+#define inf ((int)1e9)
+#define INF ((ll)9e18)
+#define mod (1000000000 + 7)
+#define newl '\n'
 #define SYNC std::ios::sync_with_stdio(false);  cin.tie(NULL);
 #define ff first
 #define ss second
@@ -21,22 +26,44 @@ typedef pair<int, int> ii;
 typedef vector<ii> vii;
 typedef vector<int> vi;
 typedef vector<vi> vvi;
-#define mod (7 + (int)1e9)
-#define N 505
-int n, a[N], d, dp[N][1 << 10] = {}; string s;
-int recurse(int cur, int mask) {
-    if(dp[cur][mask] != -1) return dp[cur][mask];
-    dp[cur][mask] = 0;
-    FOR0(i, 5) {
-        
+const int A = 505;
+int a, d, dp[A][1 << 5][1 << 5] = {}, finish;
+string s;
+void fix(int &p, int &n, int u, int v) {
+    if(abs(u - v) > d) return;
+    if(u > v) p |= 1 << (u - v - 1);
+    else n |= 1 << (v - u - 1);
+}
+int go(int cur, int pre, int nxt) {
+    if(dp[cur][pre][nxt] != -1) return dp[cur][pre][nxt];
+    int& ans = dp[cur][pre][nxt];
+    if(cur == a-1) return ans = (pre == finish);
+    ans = 0;
+    FOR(x, 1, d + 1) {
+        if((nxt & (1 << (x-1)))==0 && (s[cur] == '?' || s[cur] == '0' + x) && cur+x < a) {
+            int p = 0, n = 0;
+            fix(p, n, cur + x, cur);
+            FOR(i, 1, d + 1) if(nxt & (1 << (i-1))) fix(p, n, cur + x, cur + i);
+            FOR(i, 1, d + 1) if(pre & (1 << (i-1))) fix(p, n, cur + x, cur - i);
+            ans = (ans + go(cur + x, p ,n)) % mod;
+        }
     }
+    FOR(x, 1, d + 1) {
+        if((pre & (1 << (x-1)))==0 && (s[cur] == '?' || s[cur] == '0' + x) && cur-x >= 0) {
+            int p = 0, n = 0;
+            fix(p, n, cur - x, cur);
+            FOR(i, 1, d + 1) if(nxt & (1 << (i-1))) fix(p, n, cur - x, cur + i);
+            FOR(i, 1, d + 1) if(pre & (1 << (i-1))) fix(p, n, cur - x, cur - i);
+            ans = (ans + go(cur - x, p ,n)) % mod;
+        }
+    }
+    return ans;
 }
 int main() {
     SYNC
-    cin >> s >> d; n = s.length();
-    FOR0(i, n) {
-        a[i] = s[i] == '?' ? 0 : s[i]-'0'; 
-    }
-    FOR(i, 1, n) FOR0(j, 1 << 10) dp[i][j] = -1;
-    dp[0][0] = 1;
+    cin >> s >> d; a = s.length();
+    memset(dp, -1, sizeof dp);
+    int finish = (1 << min(d, a-1)) - 1;
+    cout << go(0, 0, 0) << newl;
+    DEBUG(dp[5][7][0]);
 }

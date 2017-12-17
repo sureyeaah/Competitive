@@ -11,7 +11,12 @@ using namespace std;
 #define printCase() "Case #" << caseNum << ": "
 #define pb push_back
 #define mp make_pair
-#define INF ((int)1e9)
+#define EPS (1e-9)
+#define PI 3.1415926535
+#define inf ((int)1e9)
+#define INF ((ll)9e18)
+#define mod (1000000000 + 7)
+#define newl '\n'
 #define SYNC std::ios::sync_with_stdio(false);  cin.tie(NULL);
 #define ff first
 #define ss second
@@ -21,31 +26,39 @@ typedef pair<int, int> ii;
 typedef vector<ii> vii;
 typedef vector<int> vi;
 typedef vector<vi> vvi;
-#define N 100005
-int n, k, a[N], ft[N] = {}, entry[N], out[N], tmp[N] = {};
-void update(int i) {
-    for(;i<=n;i+=i&-i) ft[i]++;
-}
-int query(int i) {
-    int ret = 0;
-    for(;i;i-=i&(-i)) ret += ft[i];
+int n, m, z;
+const int N = 1.5e7 + 10;
+bitset<N> p;
+vi primes;
+ll modexp(ll a, ll b) {
+    ll ret = 1;
+    for(;b;b>>=1) {
+        if(b & 1)
+            ret = ret * a % mod;
+        a = a * a % mod;
+    }
     return ret;
 }
 int main() {
     SYNC
-    cin >> n >> k;
-    FOR0(i, n) cin >> a[i];
-    stack<int> s;
-    FOR0(i, n) {
-        while(!s.empty() && a[s.top()] > a[i] && a[s.top()] <= a[i] + k) s.pop();
-        entry[i] = s.empty() ? 0 : entry[s.top()] + 1;
-        tmp[i] = query(entry[i] + 1);
-        update(entry[i] + 1);
-        s.push(i);
+    cin >> n >> m;
+    z = min(n, m) + 1;
+    p.set(); p[0] = p[1] = 0;
+    ll ans = 1;
+    for(int i = 2; i < z; i++) {
+        if(p[i]) {
+            primes.pb(i);
+            ll a = n, b = m, cnt = 0;
+            while(a && b) {
+                a /= i; b /= i;
+                cnt += a * b;
+            }
+            ans = (ans * modexp(i, cnt)) % mod;
+        }
+        for(int j = 0; j < SZ(primes) && i * primes[j] < z; j++) {
+            p[i * primes[j]] = 0;
+            if(i % primes[j] == 0) break;
+        }
     }
-    FOR0(i, n) {
-        int x = entry[i] + query(entry[i] + 1) - tmp[i];
-        out[x] = a[i];
-    }
-    FOR0(i, n) cout << out[i] << " ";
+    cout << ans;
 }

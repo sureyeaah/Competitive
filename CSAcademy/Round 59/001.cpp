@@ -11,8 +11,13 @@ using namespace std;
 #define printCase() "Case #" << caseNum << ": "
 #define pb push_back
 #define mp make_pair
-#define INF ((int)1e9)
-#define SYNC std::ios::sync_with_stdio(false)
+#define EPS (1e-9)
+#define PI 3.1415926535
+#define inf ((int)1e9)
+#define INF ((ll)9e18)
+#define mod (1000000000 + 7)
+#define newl '\n'
+#define SYNC std::ios::sync_with_stdio(false);  cin.tie(NULL);
 #define ff first
 #define ss second
 typedef long long ll;
@@ -23,6 +28,13 @@ typedef vector<int> vi;
 typedef vector<vi> vvi;
 
 int main() {
-    SYNC;
-    
+    SYNC
+    int n; string s;
+    cin >> n >> s;
+    FOR0(i, n) {
+        if(count(s.begin(), s.end(), s[i]) == 1) {
+            cout << s[i]; return 0;
+        }
+    }
+    cout << -1;
 }

@@ -1,0 +1,22 @@
+-- Example 0
+3
+A 0:00
+SWITCH 1:23
+END 3:00
+
+1:23
+-- Example 1
+4
+A 0:00
+SWITCH 1:23
+SWITCH 4:50
+END 15:00
+
+11:33
+-- Example 2
+3
+A 0:00
+SWITCH 0:00
+END 15:00
+
+0:00

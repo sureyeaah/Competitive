@@ -26,47 +26,19 @@ typedef pair<int, int> ii;
 typedef vector<ii> vii;
 typedef vector<int> vi;
 typedef vector<vi> vvi;
-const int N = 2000 * 1005;
-map<char, int> go[N];
-int par[N], sz = 1, fail[N], ans[1005] = {};
-char pc[N];
-vvi cont(N);
-void add(string& s, int i ) {
-    int cur = 0;
-    for(char c : s) {
-        auto it = go[cur].find(c);
-        if(it == go[cur].end()) {
-            par[sz] = cur;
-            pc[sz] = c;
-            cur = go[cur][c] = sz++;
-        } else cur = it->ss;
-    }
-    cont[cur].pb(i);
-}
-int nxt(int cur, char c) {
-    auto it = go[cur].find(c);
-    if(it == go[cur].end()) {
-        if(fail[cur] == -1) {
-            if(!cur || !par[cur]) return fail[cur] = 0;
-            fail[cur] = nxt(par[cur], c);
-            for(int x : cont[fail[cur]]) cont[cur].pb(x);
-        } else return fail[cur];
-    } else return it->ss;
-}
+const int N = 105;
 int main() {
     SYNC
-    string m, s; int n;
-    cin >> m >> n;
-    memset(fail, -1 ,sizeof fail);
-    par[0] = 0;
+    int n, X, l[N], r[N]; long double v[N], vmax;
+    cin >> n >> X >> vmax;
     FOR0(i, n) {
-        cin >> s;
-        add(s, i);
+        cin >> l[i] >> r[i] >> v[i];
     }
-    int cur = 0;
-    for(int c : m) {
-        cur = nxt(cur, c);
-        for(int x : cont[cur]) ans[x] = 1;
-    }
-    FOR0(i, n) cout << (ans[i] ? 'Y':'N') << newl;
+    long double prod = 0;
+    FOR0(i, n) prod += v[i] * (r[i] - l[i]);
+    long double y = abs(prod/X);
+    long double x = (vmax - y > EPS) ? pow(vmax*vmax - y*y, 0.5): 0;
+    if(2*x - vmax < EPS) {
+        cout << "Too hard";
+    } else cout << fixed << setprecision(3)<< X/x;
 }

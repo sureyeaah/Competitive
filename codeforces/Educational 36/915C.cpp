@@ -24,7 +24,6 @@ const ld EPS = 1e-9, PI = acosl(-1.0);
 
 ll convert(string& s) {
     ll ans = 0;
-    if(s[0]=='0') return -1;
     for(char c : s) ans = ans*10 + (c-'0');
     return ans;
 }

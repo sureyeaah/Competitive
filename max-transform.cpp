@@ -1,4 +1,3 @@
-
 #define _CRT_SECURE_NO_WARNINGS
 #include <bits/stdc++.h>
 using namespace std;
@@ -27,46 +26,45 @@ typedef pair<int, int> ii;
 typedef vector<ii> vii;
 typedef vector<int> vi;
 typedef vector<vi> vvi;
-inline int mult(int a, int b) {return (1LL * a * b) % mod;}
-inline int add(int a, int b) {return (a + b) % mod;}
-const int N = 1e5 + 5;
-int n, p, x[N], dp[N][2] = {};
-vvi g(N);
-int modexp(int a, int b) {
-  int res = 1;
-  for(;b;b>>=1) {
-    if(b & 1)
-      res = mult(res, a);
-    a = mult(a, a);
-  }
-  return res;
-}
-int inv(int a) {
-  return modexp(a, mod - 2);
-}
-void dfs(int u) {
-  dp[u][x[u]] = 1;
-  for(int v : g[u]) {
-    dfs(v);
-    dp[u][x[u]] = mult(dp[u][x[u]], add(dp[v][0], dp[v][1]));
-  }
-  if(!x[u]) {
-    for(int v : g[u]) {
-      dp[u][1] = add(dp[u][1], mult(dp[u][0], mult(inv(dp[v][1] + dp[v][0]), dp[v][1])));
-    }
-  }
-}
-
+const int N = 4005; 
+int dp[N][N], n;
+vi a, l, r;
 int main() {
-  SYNC;
-  cin >> n;
-  FOR0(i, n-1) {
-    cin >> p;
-    g[p].pb(i+1);
-  }
-  FOR0(i, n) {
-    cin >> x[i];
-  }
-  dfs(0);
-  cout << dp[0][1];
+    SYNC
+    cin >> n; a.resize(n);
+    FOR0(i, n) {
+        cin >> a[i];
+        dp[i][i] = a[i];
+    }
+    FOR0(i, n) {
+        FOR(j, i+1, n) {
+            dp[i][j] = max(dp[i][j-1], a[j]);
+        }
+    }
+    FOR(k, 1, n) {
+        FOR0(i, n-k) {
+            a.pb(dp[i][i + k]);
+        }
+    }
+    n = SZ(a); l.resize(n);
+    if(1) {
+        stack<int> s;
+        FOR0(i, n) {
+            while(!s.empty() && a[s.top()] <= a[i]) s.pop();
+            l[i] = s.empty() ? i + 1: i - s.top();
+            s.push(i);
+        }
+    }
+    int ans = 0;
+    if(1) {
+        stack<int> s;
+        FORD(i, 0, n) {
+            while(!s.empty() && a[s.top()] < a[i]) s.pop();
+            ll len = (s.empty() ? n - i: s.top() - i);
+            // cerr << i << " " << l[i] << " " << len << newl;
+            ans = (ans + a[i] * (len * l[i])) % mod;
+            s.push(i);
+        }
+    }
+    cout << ans;
 }

@@ -21,12 +21,31 @@ typedef pair<int, int> ii;
 typedef vector<ii> vii;
 typedef vector<int> vi;
 typedef vector<vi> vvi;
-#define maxn 2005
+#define N 100005
+int n, k, a[N], ft[N] = {}, entry[N], out[N], tmp[N] = {};
+void update(int i) {
+    for(;i<=n;i+=i&-i) ft[i]++;
+}
+int query(int i) {
+    int ret = 0;
+    for(;i;i-=i&(-i)) ret += ft[i];
+    return ret;
+}
 int main() {
     SYNC
-    int w, b, n;
-    cin >> w >> b; n = w + b;
-    long double dp[maxn][maxn], ans = n ? (long double)w/(long double)n: 0;
-    
-    
+    cin >> n >> k;
+    FOR0(i, n) cin >> a[i];
+    stack<int> s;
+    FOR0(i, n) {
+        while(!s.empty() && a[s.top()] > a[i] && a[s.top()] <= a[i] + k) s.pop();
+        entry[i] = s.empty() ? 0 : entry[s.top()] + 1;
+        tmp[i] = query(entry[i] + 1);
+        update(entry[i] + 1);
+        s.push(i);
+    }
+    FOR0(i, n) {
+        int x = entry[i] + query(entry[i] + 1) - tmp[i];
+        out[x] = a[i];
+    }
+    FOR0(i, n) cout << out[i] << " ";
 }

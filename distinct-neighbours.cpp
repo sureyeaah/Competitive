@@ -21,12 +21,35 @@ typedef pair<int, int> ii;
 typedef vector<ii> vii;
 typedef vector<int> vi;
 typedef vector<vi> vvi;
-#define maxn 2005
+#define N 755
+#define mod (7 + (int)1e9)
+int fac[N], invfac[N];
+int pow(int a, int pow) {
+    int res = 1;
+    while(pow) {
+        if(pow & 1) res = res * 1LL * a % mod;
+        pow >>= 1;
+        a = a * 1LL * a % mod;
+    }
+    return res;
+}
+int ncr(int n, int r) {
+    if(r > n) return 0;
+    else return (1LL * fac[n] * invfac[r] % mod) * invfac[n - r] % mod;
+}
 int main() {
     SYNC
-    int w, b, n;
-    cin >> w >> b; n = w + b;
-    long double dp[maxn][maxn], ans = n ? (long double)w/(long double)n: 0;
-    
-    
+    int n, a[N], cnt[N] = {}, dp[N][N] = {};
+    fac[0] = 1; FOR(i,1,N) fac[i] = fac[i-1] * 1LL * i % mod;
+    FOR0(i, N) infac[i] = pow(fac[i], mod - 2);
+    cin >> n;
+    FOR0(i, n) cin >> a[i];
+    FOR0(i,n) cnt[a[i]]++;
+    dp[0][0] = 1;
+    int tot = 0;
+    FOR(i,1,N) {
+        FOR(j,0,N) {
+            
+        }
+    }
 }

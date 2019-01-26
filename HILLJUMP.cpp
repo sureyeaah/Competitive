@@ -21,12 +21,27 @@ typedef pair<int, int> ii;
 typedef vector<ii> vii;
 typedef vector<int> vi;
 typedef vector<vi> vvi;
-#define maxn 2005
+#define N 100005
 int main() {
     SYNC
-    int w, b, n;
-    cin >> w >> b; n = w + b;
-    long double dp[maxn][maxn], ans = n ? (long double)w/(long double)n: 0;
-    
-    
+    int type, n, q, l, r, x, k;
+    ll a[N];
+    cin >> n >> q;
+    FOR0(i, n) cin >> a[i+1];
+    while(q--) {
+        cin >> type;
+        if(type == 1 ) {
+            cin >> l >> k;
+            FOR(i,l+1,n+1) {
+                if(a[i] > a[l] && i-l <= 100 && k) {
+                    l = i;
+                    k--;
+                }
+            }
+            cout << l << '\n';
+        } else {
+            cin >> l >> r >> x;
+            FOR(i,l,r+1) a[i] += x;
+        }
+    }
 }

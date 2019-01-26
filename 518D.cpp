@@ -1,4 +1,3 @@
-
 #define _CRT_SECURE_NO_WARNINGS
 #include <bits/stdc++.h>
 using namespace std;
@@ -27,46 +26,23 @@ typedef pair<int, int> ii;
 typedef vector<ii> vii;
 typedef vector<int> vi;
 typedef vector<vi> vvi;
-inline int mult(int a, int b) {return (1LL * a * b) % mod;}
-inline int add(int a, int b) {return (a + b) % mod;}
-const int N = 1e5 + 5;
-int n, p, x[N], dp[N][2] = {};
-vvi g(N);
-int modexp(int a, int b) {
-  int res = 1;
-  for(;b;b>>=1) {
-    if(b & 1)
-      res = mult(res, a);
-    a = mult(a, a);
-  }
-  return res;
-}
-int inv(int a) {
-  return modexp(a, mod - 2);
-}
-void dfs(int u) {
-  dp[u][x[u]] = 1;
-  for(int v : g[u]) {
-    dfs(v);
-    dp[u][x[u]] = mult(dp[u][x[u]], add(dp[v][0], dp[v][1]));
-  }
-  if(!x[u]) {
-    for(int v : g[u]) {
-      dp[u][1] = add(dp[u][1], mult(dp[u][0], mult(inv(dp[v][1] + dp[v][0]), dp[v][1])));
-    }
-  }
-}
-
+const int N = 2005;
 int main() {
-  SYNC;
-  cin >> n;
-  FOR0(i, n-1) {
-    cin >> p;
-    g[p].pb(i+1);
-  }
-  FOR0(i, n) {
-    cin >> x[i];
-  }
-  dfs(0);
-  cout << dp[0][1];
+    SYNC
+    long double p, dp[N][N];
+    int n, k;
+    cin >> n >> p >> k;
+    dp[0][0]=1;
+    long double ans = 0;
+    FOR(t,1,k+1) {
+        ans = 0;
+        dp[t][0] = dp[t-1][0] * (1-p);
+        FOR(i, 1, min(n, t) + 1) {
+            dp[t][i] = p*dp[t-1][i-1];
+            if(i < n) dp[t][i] += (1-p)*(dp[t-1][i]);
+            else dp[t][i] += (dp[t-1][i]);
+            ans += i * dp[t][i];
+        }
+    }
+    cout << fixed << setprecision(10) << ans;
 }

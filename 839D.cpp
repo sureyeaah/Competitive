@@ -21,12 +21,28 @@ typedef pair<int, int> ii;
 typedef vector<ii> vii;
 typedef vector<int> vi;
 typedef vector<vi> vvi;
-#define maxn 2005
+#define N 1000005
+#define mod 7 + (int)1e9
 int main() {
     SYNC
-    int w, b, n;
-    cin >> w >> b; n = w + b;
-    long double dp[maxn][maxn], ans = n ? (long double)w/(long double)n: 0;
-    
-    
+    int n, a, cnt[N] = {}; ll subsets[N] = {}; 
+    cin >> n;
+    FOR0(i, n) {
+        cin >> a;
+        cnt[a]++;
+    }
+    FORD(i,2,N) {
+        int sub = 0, add = cnt[i];
+        for(int j = 2; j*i < N; j++) {
+            add = (add + cnt[j*i]) % mod;
+            sub += subsets[j*i];
+        }
+        subsets[i] = (1 << add) - 1 - sub;
+    }
+    ll ans = 0;
+    FOR(i,2,N) {
+        ans += (subsets[i]*i)%mod;
+        ans %= mod;
+    }
+    cout << ans;
 }

@@ -1,3 +1,4 @@
+// Gear4        
 #define _CRT_SECURE_NO_WARNINGS
 #include <bits/stdc++.h>
 using namespace std;
@@ -5,28 +6,31 @@ using namespace std;
 #define FOR0(i,n) for(int i=0, _##i=(n); i<_##i; ++i)
 #define FOR(i,l,r) for(int i=(l), _##i=(r); i<_##i; ++i)
 #define FORD(i,l,r) for(int i=(r), _##i=(l); --i>=_##i; )
-#define repi(i,a) for(__typeof((a).begin()) i=(a).begin(), _##i=(a).end(); i!=_##i; ++i)
-#define dwni(i,a) for(__typeof((a).rbegin()) i=(a).rbegin(), _##i=(a).rend(); i!=_##i; ++i)
 #define SZ(a) ((int)((a).size()))
 #define printCase() "Case #" << caseNum << ": "
 #define pb push_back
 #define mp make_pair
-#define INF ((int)1e9)
 #define SYNC std::ios::sync_with_stdio(false);  cin.tie(NULL);
 #define ff first
 #define ss second
-typedef long long ll;
-typedef unsigned long long ull;
-typedef pair<int, int> ii;
-typedef vector<ii> vii;
-typedef vector<int> vi;
-typedef vector<vi> vvi;
-#define maxn 2005
+template<typename T> using V = vector<T>;
+template<typename T, typename U> using P = pair<T,U>;
+using ld = long double;
+using ll = long long;
+#define endl '\n'
+const int inf = 1e9, mod = 1e9 + 7;
+const ll INF = 9e18;
+const ld EPS = 1e-9, PI = acosl(-1.0);
+
 int main() {
     SYNC
-    int w, b, n;
-    cin >> w >> b; n = w + b;
-    long double dp[maxn][maxn], ans = n ? (long double)w/(long double)n: 0;
-    
-    
+    int n; string s;
+    cin >> n >> s;
+    FOR0(i, n-1) {
+        if(s[i] != s[i+1]) {
+            cout << "YES" << endl << s[i] << s[i+1];
+            return 0;
+        }
+    }
+    cout << "NO";
 }

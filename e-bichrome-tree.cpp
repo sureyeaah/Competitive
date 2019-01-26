@@ -1,4 +1,3 @@
-
 #define _CRT_SECURE_NO_WARNINGS
 #include <bits/stdc++.h>
 using namespace std;
@@ -17,7 +16,6 @@ using namespace std;
 #define inf ((int)1e9)
 #define INF ((ll)9e18)
 #define mod (1000000000 + 7)
-#define newl '\n'
 #define SYNC std::ios::sync_with_stdio(false);  cin.tie(NULL);
 #define ff first
 #define ss second
@@ -27,46 +25,50 @@ typedef pair<int, int> ii;
 typedef vector<ii> vii;
 typedef vector<int> vi;
 typedef vector<vi> vvi;
-inline int mult(int a, int b) {return (1LL * a * b) % mod;}
-inline int add(int a, int b) {return (a + b) % mod;}
-const int N = 1e5 + 5;
-int n, p, x[N], dp[N][2] = {};
+#define N 1005
+#define X 5005
+int n, p, x[N], dp[N][2] = {}, src[X] = {}, ans = 1;
+bitset<X> poss;
 vvi g(N);
-int modexp(int a, int b) {
-  int res = 1;
-  for(;b;b>>=1) {
-    if(b & 1)
-      res = mult(res, a);
-    a = mult(a, a);
-  }
-  return res;
-}
-int inv(int a) {
-  return modexp(a, mod - 2);
-}
-void dfs(int u) {
-  dp[u][x[u]] = 1;
-  for(int v : g[u]) {
-    dfs(v);
-    dp[u][x[u]] = mult(dp[u][x[u]], add(dp[v][0], dp[v][1]));
-  }
-  if(!x[u]) {
+int dfs(int u) {
+    poss.reset(); poss[0] = 1;
     for(int v : g[u]) {
-      dp[u][1] = add(dp[u][1], mult(dp[u][0], mult(inv(dp[v][1] + dp[v][0]), dp[v][1])));
+        dfs(v);
+        dp[u][1] += dp[v][0];
+        FORD(i,x[v],x[u]+1) {
+            if(poss[i-x[v]]) {
+                poss[i] = 1;
+                src[i] = v;
+            }
+        }
     }
-  }
+    FORD(i,0,x[u]) {
+        if(poss[i]) {
+            dp[u][0] = x[u];
+            while(src[i]) {
+                dp[u][1] += -dp[src[i]][0] + dp[src[i]][1];
+                src[i] = src[i - x[src[i]]];
+            }
+            break;
+        }
+    }
 }
-
 int main() {
-  SYNC;
-  cin >> n;
-  FOR0(i, n-1) {
-    cin >> p;
-    g[p].pb(i+1);
-  }
-  FOR0(i, n) {
-    cin >> x[i];
-  }
-  dfs(0);
-  cout << dp[0][1];
+    SYNC
+    
+    cin >> n;
+    FOR(i,2,n+1) {
+        cin >> p;
+        g[p].pb(i);
+    }
+    FOR0(i, n) cin >> x[i+1];
+    dfs(1);
+    DEBUG(dp[1][0]);
+    DEBUG(dp[1][1]);
+    DEBUG(dp[2][0]);
+    DEBUG(dp[2][1]);
+    DEBUG(dp[3][0]);
+    DEBUG(dp[3][1]);
+
+    cout << (ans ? "POSSIBLE" : "IMPOSSIBE");
 }

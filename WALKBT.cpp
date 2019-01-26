@@ -21,12 +21,48 @@ typedef pair<int, int> ii;
 typedef vector<ii> vii;
 typedef vector<int> vi;
 typedef vector<vi> vvi;
-#define maxn 2005
+bitset<2005> bs;
+int t, n, q, c, trie[2005*2005][2], tot = 0; char x; 
+/*bool search() {
+    if(!tot) return false;
+    int p = 0;
+    FORD(i,0,n) {
+        p = trie[p][bs[i]];
+        if(!p)retur false;
+    }
+    return true;
+}*/
+void add() {
+    int p = 0;
+    FORD(i,0, n) {
+        if(!trie[p][bs[i]])
+            trie[p][bs[i]] = ++tot;
+        p = trie[p][bs[i]];
+    }
+}
 int main() {
     SYNC
-    int w, b, n;
-    cin >> w >> b; n = w + b;
-    long double dp[maxn][maxn], ans = n ? (long double)w/(long double)n: 0;
     
-    
+    cin >> t;
+    while(t--) {
+        bs.reset();
+        cin >> n >> q;
+        memset(trie, 0, sizeof trie);
+        tot = 1;
+        while(q--) {
+            cin >> x;
+            if(x == '!') {
+                cin >> c;
+                int carry = 1;
+                while(carry) {
+                    carry = bs[c];
+                    bs[c] = !bs[c];
+                    c++;
+                }
+                bs[n] = 0;
+                add();
+            } else
+                cout << tot << '\n';
+        }
+    }
 }

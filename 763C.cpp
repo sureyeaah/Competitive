@@ -21,12 +21,29 @@ typedef pair<int, int> ii;
 typedef vector<ii> vii;
 typedef vector<int> vi;
 typedef vector<vi> vvi;
-#define maxn 2005
+int, m, n, a[100005];
+bool solve() {
+    if(n == 1) {
+        cout << a[0] << " " << 0;
+        return true;
+    }
+    FOR0(i, n-1) {
+        if(a[i+1] - a[i])
+    }
+}
 int main() {
     SYNC
-    int w, b, n;
-    cin >> w >> b; n = w + b;
-    long double dp[maxn][maxn], ans = n ? (long double)w/(long double)n: 0;
     
-    
+    cin >> m >> n;
+    FOR0(i, n) {
+        cin >> a[i];
+        a[i] %= m;
+    }
+    sort(a, a + n);
+    if(!solve()) {
+        reverse(a, a + n);
+        if(!solve()) {
+            cout << "NO";
+        }
+    }
 }

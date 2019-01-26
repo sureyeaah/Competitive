@@ -1,4 +1,3 @@
-
 #define _CRT_SECURE_NO_WARNINGS
 #include <bits/stdc++.h>
 using namespace std;
@@ -16,7 +15,7 @@ using namespace std;
 #define PI 3.1415926535
 #define inf ((int)1e9)
 #define INF ((ll)9e18)
-#define mod (1000000000 + 7)
+#define mod (998244353LL)
 #define newl '\n'
 #define SYNC std::ios::sync_with_stdio(false);  cin.tie(NULL);
 #define ff first
@@ -27,46 +26,43 @@ typedef pair<int, int> ii;
 typedef vector<ii> vii;
 typedef vector<int> vi;
 typedef vector<vi> vvi;
-inline int mult(int a, int b) {return (1LL * a * b) % mod;}
-inline int add(int a, int b) {return (a + b) % mod;}
-const int N = 1e5 + 5;
-int n, p, x[N], dp[N][2] = {};
-vvi g(N);
-int modexp(int a, int b) {
-  int res = 1;
-  for(;b;b>>=1) {
-    if(b & 1)
-      res = mult(res, a);
-    a = mult(a, a);
-  }
-  return res;
-}
-int inv(int a) {
-  return modexp(a, mod - 2);
-}
-void dfs(int u) {
-  dp[u][x[u]] = 1;
-  for(int v : g[u]) {
-    dfs(v);
-    dp[u][x[u]] = mult(dp[u][x[u]], add(dp[v][0], dp[v][1]));
-  }
-  if(!x[u]) {
-    for(int v : g[u]) {
-      dp[u][1] = add(dp[u][1], mult(dp[u][0], mult(inv(dp[v][1] + dp[v][0]), dp[v][1])));
+#define N 10000
+int a, b, c;
+ll fac[N], invfac[N];
+int modexp(ll a, ll b, ll p) {
+    ll res = 1;
+    while(b) {
+        if(b & 1)
+            res = (res * a) % p;
+        b >>= 1;
+        a = (a * a) % p;
     }
-  }
+    return res;
 }
-
+ll inv(ll x) {
+    return modexp(x, mod-2, mod);
+}
+ll choose(ll a, ll b) {
+    return (((fac[a] * invfac[b]) % mod ) * invfac[a - b]) % mod;
+}
+ll val(ll a, ll b) {
+    if(a < b) swap(a, b);
+    ll ans = 0;
+    FOR0(i, b+1) {
+        ll x = (choose(a, i) * choose(b, i)) % mod;
+        ans = (ans + (x * fac[i])) % mod;
+    }
+    return ans;
+}
 int main() {
-  SYNC;
-  cin >> n;
-  FOR0(i, n-1) {
-    cin >> p;
-    g[p].pb(i+1);
-  }
-  FOR0(i, n) {
-    cin >> x[i];
-  }
-  dfs(0);
-  cout << dp[0][1];
+    SYNC
+    fac[0] = 1;
+    FOR(i,1,N) fac[i] = (fac[i-1] * i) % mod;
+    FOR0(i,N) invfac[i] = inv(fac[i]);
+    cin >> a >> b >> c;
+    ll ans = 1;
+    ans = (ans * val(a, b)) % mod;
+    ans = (ans * val(b, c)) % mod;
+    ans = (ans * val(c, a)) % mod;
+    cout << ans;
 }
